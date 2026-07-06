@@ -1,0 +1,30 @@
+.rec-carousel {
+  margin-top: 56px;
+}
+
+.rec-carousel-title {
+  font-size: 1.3rem;
+  margin-bottom: 18px;
+}
+
+.rec-carousel-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scroll-snap-type: x proximity;
+}
+
+.rec-carousel-item {
+  flex: 0 0 200px;
+  scroll-snap-align: start;
+}
+
+.rec-carousel-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.rec-carousel-track::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}

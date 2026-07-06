@@ -1,0 +1,44 @@
+.listing-page {
+  padding: 40px 24px 64px;
+}
+
+.listing-header {
+  margin-bottom: 28px;
+}
+
+.listing-header h1 {
+  font-size: 2rem;
+}
+
+.listing-subtitle {
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.listing-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.listing-controls input,
+.listing-controls select {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.listing-controls input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}

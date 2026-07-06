@@ -1,0 +1,43 @@
+.home-hero {
+  background: var(--ink);
+  color: white;
+  padding: 100px 24px 90px;
+}
+
+.home-hero-inner {
+  max-width: 720px;
+}
+
+.home-eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--amber);
+  margin-bottom: 20px;
+}
+
+.home-hero h1 {
+  font-size: 3rem;
+  line-height: 1.15;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.home-lede {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 32px;
+  max-width: 480px;
+}
+
+.home-cta {
+  font-size: 1rem;
+  padding: 14px 26px;
+}
+
+@media (max-width: 640px) {
+  .home-hero h1 {
+    font-size: 2.1rem;
+  }
+}
