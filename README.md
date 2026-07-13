@@ -175,7 +175,6 @@ Manage customer orders and update delivery status.
 - GitHub
 - VS Code
 
-<<<<<<< HEAD
 # 🏗️ System Architecture
 
 ```text
@@ -193,12 +192,6 @@ Manage customer orders and update delivery status.
         │                     │                     │
         ▼                     ▼                     ▼
    MongoDB Database      JWT Authentication    Razorpay API
-=======
-├── client/
-├── server/
-├── assets/
-└── README.md
->>>>>>> origin/main
 ```
 
 ### Request Flow
@@ -293,7 +286,6 @@ RAZORPAY_KEY_ID=your_key
 RAZORPAY_KEY_SECRET=your_secret
 ```
 
-<<<<<<< HEAD
 # 🚀 Future Roadmap
 
 The following enhancements are planned for future releases:
@@ -326,6 +318,3 @@ Hi, I'm **Abhishek Sharma**, a Full Stack Developer passionate about building sc
 ---
 
 ⭐ **If you found this project interesting, consider giving it a Star!**
-=======
-⭐ If you like this project, consider giving it a star!
->>>>>>> origin/main
