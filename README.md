@@ -157,8 +157,7 @@ truegoods/
 ├── client/
 ├── server/
 ├── assets/
-├── README.md
-└── package.json
+└── README.md
 ```
 
 ---
