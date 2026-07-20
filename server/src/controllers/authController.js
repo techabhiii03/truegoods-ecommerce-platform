@@ -1,13 +1,26 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const asyncHandler = require('../utils/asyncHandler');
-const { generateAccessToken, generateRefreshToken } = require('../utils/generateToken');
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require('../utils/generateToken');
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  path: '/',
+};
+
+const CLEAR_REFRESH_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
+  path: '/',
 };
 
 // @route POST /api/auth/register
@@ -19,13 +32,20 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('Please provide name, email, and password');
   }
 
-  const existingUser = await User.findOne({ email });
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const existingUser = await User.findOne({ email: normalizedEmail });
+
   if (existingUser) {
     res.status(409);
     throw new Error('An account with this email already exists');
   }
 
-  const user = await User.create({ name, email, password });
+  const user = await User.create({
+    name: name.trim(),
+    email: normalizedEmail,
+    password,
+  });
 
   if (user.isBlocked) {
     res.status(403);
@@ -38,7 +58,13 @@ const registerUser = asyncHandler(async (req, res) => {
   res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
 
   res.status(201).json({
-    user: { id: user._id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt },
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+    },
     accessToken,
   });
 });
@@ -52,8 +78,11 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error('Please provide email and password');
   }
 
-  // password field has select:false in schema, so explicitly request it
-  const user = await User.findOne({ email }).select('+password');
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const user = await User.findOne({
+    email: normalizedEmail,
+  }).select('+password');
 
   if (!user || !(await user.matchPassword(password))) {
     res.status(401);
@@ -71,7 +100,13 @@ const loginUser = asyncHandler(async (req, res) => {
   res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
 
   res.status(200).json({
-    user: { id: user._id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt },
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+    },
     accessToken,
   });
 });
@@ -86,39 +121,70 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 
   let decoded;
+
   try {
     decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-  } catch (err) {
+  } catch {
+    res.clearCookie('refreshToken', CLEAR_REFRESH_COOKIE_OPTIONS);
+
     res.status(401);
     throw new Error('Invalid or expired refresh token');
   }
 
   const user = await User.findById(decoded.id);
+
   if (!user) {
+    res.clearCookie('refreshToken', CLEAR_REFRESH_COOKIE_OPTIONS);
+
     res.status(401);
     throw new Error('User no longer exists');
   }
 
+  if (user.isBlocked) {
+    res.clearCookie('refreshToken', CLEAR_REFRESH_COOKIE_OPTIONS);
+
+    res.status(403);
+    throw new Error('This account has been blocked. Contact support.');
+  }
+
   const accessToken = generateAccessToken(user._id);
-  res.status(200).json({ accessToken });
+
+  res.status(200).json({
+    accessToken,
+  });
 });
 
 // @route POST /api/auth/logout
 const logoutUser = asyncHandler(async (req, res) => {
-  res.clearCookie('refreshToken', REFRESH_COOKIE_OPTIONS);
-  res.status(200).json({ message: 'Logged out successfully' });
+  res.clearCookie('refreshToken', CLEAR_REFRESH_COOKIE_OPTIONS);
+
+  res.status(200).json({
+    message: 'Logged out successfully',
+  });
 });
 
 // @route GET /api/auth/me
 const getCurrentUser = asyncHandler(async (req, res) => {
-  // req.user is attached by authMiddleware
   const user = await User.findById(req.user.id);
+
   if (!user) {
     res.status(404);
     throw new Error('User not found');
   }
+
+  if (user.isBlocked) {
+    res.status(403);
+    throw new Error('This account has been blocked. Contact support.');
+  }
+
   res.status(200).json({
-    user: { id: user._id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt },
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+    },
   });
 });
 
