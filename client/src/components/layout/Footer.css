@@ -1,18 +1,15 @@
-.footer {
-  margin-top: auto;
-  border-top: 1px solid var(--border);
-  padding: 24px 0;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-}
+.footer{margin-top:auto;background:#171b18;color:white}.footer-main{padding-top:75px;padding-bottom:65px;display:grid;grid-template-columns:1.7fr repeat(3,1fr);gap:60px}.footer-brand{font-family:var(--font-display);font-size:1.8rem;font-weight:750;letter-spacing:-.06em}.footer-brand span{font-weight:450}.footer-brand i{color:var(--accent);font-style:normal}.footer-brand-block p{max-width:310px;margin:18px 0 25px;color:rgba(255,255,255,.55);line-height:1.7;font-size:.85rem}.footer-socials{display:flex;gap:8px}.footer-socials a{width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);border-radius:50%;font-size:.68rem;font-weight:800;text-transform:uppercase}.footer-socials a:hover{background:white;color:var(--ink)}.footer-column{display:flex;flex-direction:column;gap:13px}.footer-column h4{margin-bottom:7px;color:white;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}.footer-column a{color:rgba(255,255,255,.55);font-size:.83rem}.footer-column a:hover{color:white}.footer-bottom{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.38);font-size:.72rem}.footer-bottom>div{display:flex;align-items:center;gap:10px}.footer-bottom strong{color:white;font-size:.8rem}@media(max-width:760px){.footer-main{grid-template-columns:1.4fr 1fr;gap:45px 30px}.footer-bottom{align-items:flex-start;flex-direction:column;justify-content:center;padding:20px 24px}}@media(max-width:480px){.footer-main{grid-template-columns:1fr 1fr}.footer-brand-block{grid-column:1/-1}}
 
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.footer-muted {
-  font-family: var(--font-mono);
+/* TrueGoods 3.0 footer scale */
+@media (min-width: 1024px) {
+  .footer-main { padding-top: 96px; padding-bottom: 84px; gap: 82px; }
+  .footer-brand { font-size: 2.35rem; }
+  .footer-brand-block p { max-width: 390px; margin: 24px 0 32px; font-size: 1rem; line-height: 1.8; }
+  .footer-socials { gap: 12px; }
+  .footer-socials a { width: 48px; height: 48px; font-size: .76rem; }
+  .footer-column { gap: 17px; }
+  .footer-column h4 { margin-bottom: 10px; font-size: .9rem; }
+  .footer-column a { font-size: .98rem; }
+  .footer-bottom { min-height: 94px; font-size: .84rem; }
+  .footer-bottom strong { font-size: .92rem; }
 }

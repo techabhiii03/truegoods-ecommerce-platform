@@ -1,5 +1,5 @@
 const express = require('express');
-const { getMyOrders, getOrderById, getAllOrders, updateOrderStatus } = require('../controllers/orderController');
+const { getMyOrders, getOrderById, getAllOrders, getDashboardAnalytics, updateOrderStatus } = require('../controllers/orderController');
 const { protect } = require('../middleware/authMiddleware');
 const { requireAdmin } = require('../middleware/adminMiddleware');
 
@@ -10,6 +10,7 @@ router.get('/', protect, getMyOrders);
 router.get('/:id', protect, getOrderById);
 
 // Admin routes
+router.get('/admin/dashboard', protect, requireAdmin, getDashboardAnalytics);
 router.get('/admin/all', protect, requireAdmin, getAllOrders);
 router.patch('/admin/:id/status', protect, requireAdmin, updateOrderStatus);
 

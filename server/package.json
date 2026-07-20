@@ -6,7 +6,13 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node src/scripts/seedCatalog.js",
+    "seed:append": "node src/scripts/seedCatalog.js --append",
+    "seed:check": "node src/scripts/seedCatalog.js --dry-run",
+    "migrate:images": "node src/scripts/migrateProductImages.js",
+    "catalog:audit": "node src/scripts/curateCatalog.js --dry-run",
+    "catalog:curate": "node src/scripts/curateCatalog.js"
   },
   "keywords": [],
   "author": "",

@@ -96,3 +96,4 @@
   border-top: 1px solid var(--border);
   font-weight: 600;
 }
+.order-track{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:25px 0 8px}.track-step{position:relative;text-align:center;color:#aaa;text-transform:capitalize;font-size:13px;font-weight:700}.track-step:before{content:"";position:absolute;height:2px;background:#ddd;left:0;right:0;top:16px}.track-step:first-child:before{left:50%}.track-step:last-child:before{right:50%}.track-step i{position:relative;z-index:1;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#eee;margin:0 auto 8px;font-style:normal}.track-step.active{color:#111}.track-step.active:before,.track-step.active i{background:#111;color:#fff}.order-cancel-note{padding:12px 16px;border-radius:10px;background:#fff1f1;color:#a22;font-weight:700;margin:18px 0}

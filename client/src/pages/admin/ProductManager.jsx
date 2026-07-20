@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getProducts, getCategories } from '../../api/productApi';
+import { getCategories } from '../../api/productApi';
 import {
   createProduct,
   updateProduct,
   updateProductStock,
   deactivateProduct,
   createCategory,
+  getAdminProducts,
+  reactivateProduct,
 } from '../../api/adminApi';
 import './AdminShared.css';
 
@@ -37,13 +39,15 @@ const ProductManager = () => {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [categorySuccess, setCategorySuccess] = useState('');
   const [stockEdits, setStockEdits] = useState({}); // { productId: newStockValue }
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
 
   const loadData = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
       const [productsRes, categoriesRes] = await Promise.all([
-        getProducts({ limit: 100 }),
+        getAdminProducts({ limit: 100, q: search, status: statusFilter }),
         getCategories(),
       ]);
       setProducts(productsRes.products);
@@ -53,7 +57,7 @@ const ProductManager = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [search, statusFilter]);
 
   useEffect(() => {
     loadData();
@@ -139,6 +143,11 @@ const ProductManager = () => {
     }
   };
 
+  const handleReactivate = async (productId) => {
+    try { await reactivateProduct(productId); await loadData(); }
+    catch { setError('Could not reactivate product.'); }
+  };
+
   const handleDeactivate = async (productId) => {
     if (!confirm('Deactivate this product? It will no longer appear in the storefront.')) return;
     try {
@@ -173,6 +182,7 @@ const ProductManager = () => {
       </div>
 
       {error && <div className="error-banner">{error}</div>}
+      <div className="admin-toolbar"><input placeholder="Search products or SKU…" value={search} onChange={(e)=>setSearch(e.target.value)} /><select value={statusFilter} onChange={(e)=>setStatusFilter(e.target.value)}><option value="">All products</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
 
      <div className="quick-category-form">
         <input
@@ -332,10 +342,10 @@ const ProductManager = () => {
                   <button className="btn btn-secondary btn-sm" onClick={() => openEditForm(p)}>
                     Edit
                   </button>
-                  {p.isActive && (
-                    <button className="btn btn-danger btn-sm" onClick={() => handleDeactivate(p._id)}>
-                      Deactivate
-                    </button>
+                  {p.isActive ? (
+                    <button className="btn btn-danger btn-sm" onClick={() => handleDeactivate(p._id)}>Deactivate</button>
+                  ) : (
+                    <button className="btn btn-primary btn-sm" onClick={() => handleReactivate(p._id)}>Reactivate</button>
                   )}
                 </td>
               </tr>

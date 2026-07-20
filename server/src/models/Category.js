@@ -18,6 +18,21 @@ const categorySchema = new mongoose.Schema(
     description: {
       type: String,
       trim: true,
+      default: '',
+    },
+    coverImage: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    featured: {
+      type: Boolean,
+      default: true,
+    },
+    displayOrder: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
   },
   { timestamps: true }

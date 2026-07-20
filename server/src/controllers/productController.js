@@ -61,6 +61,30 @@ const getProducts = asyncHandler(async (req, res) => {
   });
 });
 
+
+const getAdminProducts = asyncHandler(async (req, res) => {
+  const { q = '', status = '', category = '', page = 1, limit = 50 } = req.query;
+  const filter = {};
+  if (q) filter.$or = [{ name: { $regex: q, $options: 'i' } }, { sku: { $regex: q, $options: 'i' } }];
+  if (status === 'active') filter.isActive = true;
+  if (status === 'inactive') filter.isActive = false;
+  if (category) filter.category = category;
+  const pageNum = Math.max(Number(page), 1);
+  const limitNum = Math.min(Number(limit), 100);
+  const skip = (pageNum - 1) * limitNum;
+  const [products, totalResults] = await Promise.all([
+    Product.find(filter).populate('category', 'name slug').sort({ createdAt: -1 }).skip(skip).limit(limitNum),
+    Product.countDocuments(filter),
+  ]);
+  res.json({ products, page: pageNum, totalPages: Math.ceil(totalResults / limitNum), totalResults });
+});
+
+const reactivateProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findByIdAndUpdate(req.params.id, { isActive: true }, { new: true });
+  if (!product) { res.status(404); throw new Error('Product not found'); }
+  res.json({ message: 'Product reactivated', product });
+});
+
 // @route GET /api/products/:slug
 // @access Public
 const getProductBySlug = asyncHandler(async (req, res) => {
@@ -200,4 +224,6 @@ module.exports = {
   updateProduct,
   updateStock,
   deleteProduct,
+  getAdminProducts,
+  reactivateProduct,
 };

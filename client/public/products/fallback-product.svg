@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <rect x="210" y="210" width="780" height="780" rx="80" fill="#ffffff" stroke="#d8d1c4" stroke-width="8"/>
+  <path d="M380 760l150-170 110 110 85-95 120 155H380z" fill="#d8d1c4"/>
+  <circle cx="470" cy="470" r="70" fill="#c5bcae"/>
+  <text x="600" y="900" text-anchor="middle" font-family="Arial, sans-serif" font-size="52" fill="#3f3b35">TrueGoods</text>
+</svg>

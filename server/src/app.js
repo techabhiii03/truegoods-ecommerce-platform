@@ -9,6 +9,8 @@ const checkoutRoutes = require('./routes/checkoutRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
 const recommendationRoutes = require('./routes/recommendationRoutes');
+const adminUserRoutes = require('./routes/adminUserRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 const app = express();
 
 // --- Core middleware ---
@@ -34,7 +36,8 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/recommendations', recommendationRoutes);
-// app.use('/api/admin', adminRoutes);   // add later if you build separate admin-only routes
+app.use('/api/admin/users', adminUserRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // --- Error handling (must be last) ---
 app.use(notFound);

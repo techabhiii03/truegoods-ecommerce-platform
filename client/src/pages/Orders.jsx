@@ -77,6 +77,13 @@ const Orders = () => {
               ))}
             </div>
 
+            <div className="order-track" aria-label={`Order is ${order.orderStatus}`}>
+              {['processing','shipped','delivered'].map((step, index) => {
+                const activeIndex = order.orderStatus === 'cancelled' ? -1 : ['processing','shipped','delivered'].indexOf(order.orderStatus);
+                return <div className={`track-step ${index <= activeIndex ? 'active' : ''}`} key={step}><i>{index < activeIndex ? '✓' : index + 1}</i><span>{step}</span></div>;
+              })}
+            </div>
+            {order.orderStatus === 'cancelled' && <div className="order-cancel-note">This order was cancelled.</div>}
             <div className="order-card-footer">
               <span>Total</span>
               <span className="price-tag">{formatPrice(order.total)}</span>

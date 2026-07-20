@@ -27,13 +27,18 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const user = await User.create({ name, email, password });
 
+  if (user.isBlocked) {
+    res.status(403);
+    throw new Error('This account has been blocked. Contact support.');
+  }
+
   const accessToken = generateAccessToken(user._id);
   const refreshToken = generateRefreshToken(user._id);
 
   res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
 
   res.status(201).json({
-    user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    user: { id: user._id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt },
     accessToken,
   });
 });
@@ -55,13 +60,18 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error('Invalid email or password');
   }
 
+  if (user.isBlocked) {
+    res.status(403);
+    throw new Error('This account has been blocked. Contact support.');
+  }
+
   const accessToken = generateAccessToken(user._id);
   const refreshToken = generateRefreshToken(user._id);
 
   res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
 
   res.status(200).json({
-    user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    user: { id: user._id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt },
     accessToken,
   });
 });
@@ -108,7 +118,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
   res.status(200).json({
-    user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    user: { id: user._id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt },
   });
 });
 

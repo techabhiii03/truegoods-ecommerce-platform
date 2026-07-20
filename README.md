@@ -1,220 +1,226 @@
-# 🛍️ TrueGoods
-
 <p align="center">
-  <img src="./assets/truegoods-banner.png" alt="TrueGoods Banner" width="100%">
+  <img src="assets/Banner.png" alt="TrueGoods Banner" width="100%">
 </p>
 
-<h3 align="center">
-Modern Full-Stack E-Commerce Platform built with the MERN Stack
-</h3>
-<p align="center">
-
-🚀 **Production-Ready** • 🔐 **JWT Authentication** • 💳 **Razorpay Payments** • 👨‍💼 **Admin Dashboard** • 📦 **Order Management**
-
-</p>
-
----
+<h1 align="center">🛍️ TrueGoods</h1>
 
 <p align="center">
-
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-22-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![Express.js](https://img.shields.io/badge/Express.js-Backend-000000?style=for-the-badge&logo=express)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb)
-![JWT](https://img.shields.io/badge/JWT-Authentication-000000?style=for-the-badge&logo=jsonwebtokens)
-![Razorpay](https://img.shields.io/badge/Razorpay-Payments-0C6CF2?style=for-the-badge)
-
+A modern full-stack MERN e-commerce platform built to deliver a seamless shopping experience with secure authentication, intelligent product management, responsive design, and a feature-rich admin dashboard.
 </p>
 
 <p align="center">
 
-A modern full-stack e-commerce platform featuring secure authentication, product management, shopping cart, Razorpay payment integration, order tracking, and a complete admin dashboard.
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-22-339933?style=for-the-badge&logo=node.js)
+![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss)
+![JWT](https://img.shields.io/badge/JWT-Authentication-orange?style=for-the-badge)
 
 </p>
 
 ---
-## 📑 Table of Contents
 
-- [✨ Features](#-features)
-- [🛍 Customer Experience](#-customer-experience)
-- [⚙ Admin Dashboard](#-admin-dashboard)
-- [📸 Screenshots](#-screenshots)
-- [🛠 Tech Stack](#-tech-stack)
-- [🏗 Architecture](#-architecture)
-- [⚙ Installation](#-installation)
-- [🚀 Future Improvements](#-future-improvements)
+# 📖 Overview
 
-# ✨ Features
+**TrueGoods** is a full-stack e-commerce platform inspired by modern online marketplaces, built using the **MERN Stack**. It provides customers with a smooth shopping experience while equipping administrators with comprehensive tools to manage products, categories, customers, reviews, and orders.
 
-TrueGoods is designed to deliver a complete online shopping experience for both customers and administrators.
-
-## 🛍 Customer Experience
-
-- 🔐 Secure JWT Authentication
-- 🛒 Add, Update & Remove Cart Items
-- 🔎 Product Search
-- 🗂 Category-based Filtering
-- 📄 Product Details Page
-- 💳 Secure Razorpay Payment Integration
-- 📦 Order History & Tracking
-- 👤 User Profile Management
-- 📱 Fully Responsive Design
+The project emphasizes scalability, clean architecture, responsive UI, secure authentication, and performance optimization, making it suitable as both a learning project and a production-style portfolio application.
 
 ---
 
-## ⚙ Admin Dashboard
+# ✨ Key Features
 
-- 📦 Product Management (CRUD)
-- 🏷 Category Management
-- 📈 Stock Management
-- ✏ Edit Product Details
-- 🚫 Activate / Deactivate Products
-- 📋 Order Management
-- 🚚 Update Order Status
-- 👨‍💼 Role-based Admin Access
+## 👤 Customer Experience
 
-# 📸 Screenshots
-
-## 🏠 Home Page
-
-Browse featured products, explore categories, and discover the latest arrivals.
-
-![Home](./assets/home.png)
-
----
-
-## 📦 Product Details
-
-View detailed product information, pricing, ratings, and add items to your cart.
-
-![Product](./assets/product.png)
+- Secure JWT Authentication
+- User Registration & Login
+- Responsive Home Page
+- Product Search & Filtering
+- Category Browsing
+- Product Details Page
+- Wishlist Management
+- Shopping Cart
+- Checkout Flow
+- Order History
+- Customer Account Dashboard
+- Product Reviews & Ratings
+- Fully Responsive Design
 
 ---
 
-## 🛒 Shopping Cart
+## 🛠️ Admin Dashboard
 
-Manage quantities, review your order, and proceed to checkout.
-
-![Cart](./assets/cart.png)
-
----
-
-## 💳 Secure Checkout
-
-Integrated Razorpay payment gateway for a seamless checkout experience.
-
-![Checkout](./assets/checkout.png)
+- Dashboard Overview
+- Product Management (CRUD)
+- Category Management
+- Customer Management
+- Order Management
+- Review Moderation
+- Inventory Management
+- Store Analytics
 
 ---
 
-## ✅ Payment Success
+# 📸 Project Preview
 
-Order confirmation after successful payment.
+## 🏠 Homepage
 
-![Payment Success](./assets/payment-success.png)
-
----
-
-## 📋 Order History
-
-Customers can track all their previous orders and their current status.
-
-![Orders](./assets/orders.png)
+![](assets/home.png)
 
 ---
 
+## 🔥 Featured Products
 
-### 📦 Product Management
-
-Create, edit, update inventory, and manage products.
-
-![Admin Products](./assets/admin-products.png)
-
-### 📋 Order Management
-
-Manage customer orders and update delivery status.
-
-![Admin Orders](./assets/admin-orders.png)
-
-# 🛠 Tech Stack
-
-## Frontend
-
-- ⚛️ React.js
-- ⚡ Vite
-- 🎨 Tailwind CSS
-- 🌐 Axios
+![](assets/trending-Products.png)
 
 ---
 
-## Backend
+## 📂 Categories
 
-- 🟢 Node.js
-- 🚀 Express.js
-- 🍃 MongoDB
-- 🗄️ Mongoose
+![](assets/Category-variety.png)
 
 ---
 
-## Authentication
+## 🛍️ Shop Filters
 
-- 🔐 JSON Web Token (JWT)
-- 🔒 bcrypt.js
-
----
-
-## Payment Gateway
-
-- 💳 Razorpay
+![](assets/filter.png)
 
 ---
 
-## Tools & Deployment
+## 📄 Product Details
 
-- Git
-- GitHub
+![](assets/Product-description.png)
+
+---
+
+## ⭐ Customer Reviews
+
+![](assets/Rating.png)
+
+---
+
+## 👤 My Account
+
+![](assets/profile.png)
+
+---
+
+## ⚙️ Admin Dashboard
+
+![](assets/admin-dashboard.png)
+
+---
+
+## 📦 Product Management
+
+![](assets/admin-products.png)
+
+---
+
+## 👥 Customer Management
+
+![](assets/admin-customers.png)
+
+---
+
+## 📑 Order Management
+
+![](assets/admin-orders.png)
+
+---
+
+# 🏗️ Tech Stack
+
+### Frontend
+
+- React.js
+- Vite
+- Tailwind CSS
+- React Router DOM
+- Axios
+
+### Backend
+
+- Node.js
+- Express.js
+
+### Database
+
+- MongoDB
+- Mongoose
+
+### Authentication & Security
+
+- JWT Authentication
+- bcrypt Password Hashing
+
+### Payment Integration
+
+- Razorpay
+
+### Development Tools
+
+- Git & GitHub
+- Postman
 - VS Code
 
-# 🏗️ System Architecture
+---
+
+# ⚡ Performance Optimizations
+
+To improve the overall user experience, the application includes:
+
+- Route-based Code Splitting
+- Lazy Loading
+- Optimized Product Images
+- Skeleton Loading Screens
+- Responsive Layouts
+- Optimized Build Bundles
+- Efficient API Requests
+
+---
+
+# 📂 Project Structure
 
 ```text
-                    ┌────────────────────┐
-                    │    React Client    │
-                    └─────────┬──────────┘
-                              │
-                       REST API Requests
-                              │
-                    ┌─────────▼──────────┐
-                    │   Express Server   │
-                    └─────────┬──────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-        ▼                     ▼                     ▼
-   MongoDB Database      JWT Authentication    Razorpay API
+TrueGoods
+│
+├── assets/
+│
+├── client/
+│   ├── public/
+│   ├── src/
+│   └── package.json
+│
+├── server/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   └── package.json
+│
+├── README.md
+└── .gitignore
 ```
 
-### Request Flow
+---
 
-User → React → Express API → MongoDB  
-                        ↘ JWT Authentication  
-                        ↘ Razorpay Payment Gateway
-
-# ⚙️ Installation
+# 🚀 Installation
 
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/techabhiii03/truegoods-ecommerce-platform.git
+git clone https://github.com/techabhiii03/truegoods-ecommerce.git
+
+cd truegoods-ecommerce
 ```
 
-## Navigate to the Project
+---
 
-```bash
-cd truegoods-ecommerce-platform
-```
-
-## Backend Setup
+## Install Backend
 
 ```bash
 cd server
@@ -222,7 +228,9 @@ npm install
 npm run dev
 ```
 
-## Frontend Setup
+---
+
+## Install Frontend
 
 ```bash
 cd client
@@ -232,89 +240,63 @@ npm run dev
 
 ---
 
-### Environment Variables
+# 🔐 Environment Variables
 
-Create a `.env` file inside the `server` folder and configure:
+Create a `.env` file inside the `server` directory.
 
 ```env
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-RAZORPAY_KEY_ID=your_key
-RAZORPAY_KEY_SECRET=your_secret
-```
+PORT=
 
-># ⚙️ Installation
+MONGO_URI=
 
-## Clone the Repository
+JWT_SECRET=
 
-```bash
-git clone https://github.com/techabhiii03/truegoods-ecommerce-platform.git
-```
+RAZORPAY_KEY_ID=
 
-## Navigate to the Project
+RAZORPAY_KEY_SECRET=
 
-```bash
-cd truegoods-ecommerce-platform
-```
-
-## Backend Setup
-
-```bash
-cd server
-npm install
-npm run dev
-```
-
-## Frontend Setup
-
-```bash
-cd client
-npm install
-npm run dev
+CLIENT_URL=
 ```
 
 ---
 
-### Environment Variables
+# 🎯 Future Enhancements
 
-Create a `.env` file inside the `server` folder and configure:
+Although the project is feature-complete, there are several planned improvements:
 
-```env
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-RAZORPAY_KEY_ID=your_key
-RAZORPAY_KEY_SECRET=your_secret
-```
-
-# 🚀 Future Roadmap
-
-The following enhancements are planned for future releases:
-
-- ❤️ Wishlist functionality
-- ⭐ Product ratings & reviews
-- 🎟 Coupon & discount system
-- 📧 Email notifications
-- 📊 Sales analytics dashboard
-- ☁️ Cloudinary image storage
-- 📱 Progressive Web App (PWA)
-- 🐳 Docker support
-- 🔄 CI/CD pipeline
-- 🤖 AI-powered product recommendations
-
-## 🔗 Live Demo
-
-🚧 Coming Soon
-
-# 👨‍💻 About the Developer
-
-Hi, I'm **Abhishek Sharma**, a Full Stack Developer passionate about building scalable web applications and solving real-world problems with modern technologies.
-
-### Connect with me
-
-- 💼 LinkedIn: *(https://www.linkedin.com/in/abhiishek-sharma-96ba38378/)*
-- 🐙 GitHub: https://github.com/techabhiii03
-- 🌐 Portfolio: *(Coming Soon)*
+- AI Shopping Assistant
+- Voice Search
+- Image-Based Product Search
+- Push Notifications
+- Progressive Web App (PWA)
+- Multi-language Support
+- 3D Product Viewer
 
 ---
 
-⭐ **If you found this project interesting, consider giving it a Star!**
+# 🤝 Contributing
+
+Contributions are welcome. If you have ideas to improve the project, feel free to fork the repository, create a new branch, and submit a pull request.
+
+---
+
+# 👨‍💻 Developer
+
+**Abhishek Sharma**
+
+- 💼 LinkedIn: https://www.linkedin.com/in/abhiishek-sharma/
+- 💻 GitHub: https://github.com/techabhiii03
+
+---
+
+# ⭐ Support
+
+If you found this project useful or learned something from it, consider giving it a ⭐ on GitHub. It helps the project reach more developers and supports future improvements.
+
+---
+
+<div align="center">
+
+**Built with ❤️ using the MERN Stack**
+
+</div>

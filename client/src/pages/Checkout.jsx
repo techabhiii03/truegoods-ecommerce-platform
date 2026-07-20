@@ -1,132 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { createRazorpayOrder, verifyPayment } from '../api/checkoutApi';
 import './Checkout.css';
-
-const formatPrice = (n) => `₹${Number(n).toFixed(2)}`;
-
-// Loads the Razorpay Checkout script once and reuses it on subsequent visits
-const loadRazorpayScript = () =>
-  new Promise((resolve) => {
-    if (window.Razorpay) return resolve(true);
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-
-const Checkout = () => {
-  const { user } = useAuth();
-  const { cart, emptyCart } = useCart();
-  const navigate = useNavigate();
-
-  const [status, setStatus] = useState('idle'); // idle | processing | error
-  const [errorMsg, setErrorMsg] = useState('');
-
-  useEffect(() => {
-    if (!user) navigate('/login');
-  }, [user, navigate]);
-
-  const items = cart.items || [];
-  const subtotal = items.reduce((sum, item) => sum + (item.product?.price ?? 0) * item.quantity, 0);
-
-  const handlePay = async () => {
-    setStatus('processing');
-    setErrorMsg('');
-
-    const scriptLoaded = await loadRazorpayScript();
-    if (!scriptLoaded) {
-      setStatus('error');
-      setErrorMsg('Could not load the payment widget. Check your connection and try again.');
-      return;
-    }
-
-    try {
-      const order = await createRazorpayOrder();
-
-      const options = {
-        key: order.keyId,
-        amount: order.amount,
-        currency: order.currency,
-        name: 'TrueGoods',
-        description: 'Order payment',
-        order_id: order.orderId,
-        handler: async (response) => {
-          try {
-            const result = await verifyPayment(response);
-            await emptyCart();
-            navigate('/orders', { state: { justPlacedOrderId: result.order._id } });
-          } catch {
-            setStatus('error');
-            setErrorMsg('Payment succeeded but verification failed. Contact support with your payment id.');
-          }
-        },
-        modal: {
-          ondismiss: () => setStatus('idle'),
-        },
-        theme: { color: '#14213D' },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.on('payment.failed', () => {
-        setStatus('error');
-        setErrorMsg('Payment failed or was cancelled. You can try again.');
-      });
-      rzp.open();
-    } catch (err) {
-      setStatus('error');
-      setErrorMsg(err.response?.data?.message || 'Could not start checkout. Your cart may be empty.');
-    }
-  };
-
-  if (items.length === 0) {
-    return (
-      <div className="container empty-state">
-        <h3>Nothing to check out</h3>
-        <p>Your cart is empty — add a product first.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container checkout-page">
-      <h1>Checkout</h1>
-
-      {errorMsg && <div className="error-banner">{errorMsg}</div>}
-
-      <div className="checkout-layout">
-        <div className="checkout-items">
-          {items.map((item) => (
-            <div key={item.product._id} className="checkout-item">
-              <span>
-                {item.product.name} × {item.quantity}
-              </span>
-              <span className="price-tag">{formatPrice(item.product.price * item.quantity)}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="checkout-summary">
-          <div className="checkout-summary-row">
-            <span>Subtotal</span>
-            <span>{formatPrice(subtotal)}</span>
-          </div>
-          <p className="cart-summary-note">Final tax and shipping are calculated by the server.</p>
-
-          <button className="btn btn-primary checkout-pay-btn" onClick={handlePay} disabled={status === 'processing'}>
-            {status === 'processing' ? 'Opening payment…' : 'Pay with Razorpay'}
-          </button>
-
-          <p className="checkout-test-note">
-            Test mode — use card <code>5267 3181 8797 5449</code>, any future expiry, any CVV.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Checkout;
+const money=n=>`₹${Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:0})}`;
+const loadRazorpay=()=>new Promise(resolve=>{if(window.Razorpay)return resolve(true);const s=document.createElement('script');s.src='https://checkout.razorpay.com/v1/checkout.js';s.onload=()=>resolve(true);s.onerror=()=>resolve(false);document.body.appendChild(s)});
+export default function Checkout(){
+ const {user}=useAuth(); const {cart,emptyCart}=useCart(); const navigate=useNavigate(); const [step,setStep]=useState(1); const [status,setStatus]=useState('idle'); const [error,setError]=useState('');
+ const [form,setForm]=useState({name:user?.name||'',email:user?.email||'',phone:'',address:'',city:'',state:'',pincode:''});
+ useEffect(()=>{if(!user)navigate('/login')},[user,navigate]); const items=cart.items||[]; const subtotal=useMemo(()=>items.reduce((s,i)=>s+(i.product?.price||0)*i.quantity,0),[items]); const shipping=subtotal>=999?0:99; const total=subtotal+shipping;
+ const update=e=>setForm({...form,[e.target.name]:e.target.value});
+ const continueToPayment=e=>{e.preventDefault(); if(!form.name||!form.phone||!form.address||!form.city||!form.state||!form.pincode){setError('Please complete all delivery details.');return} setError('');setStep(2)};
+ const pay=async()=>{setStatus('processing');setError('');if(!(await loadRazorpay())){setStatus('error');setError('Could not load Razorpay. Check your connection.');return}try{const order=await createRazorpayOrder();const rzp=new window.Razorpay({key:order.keyId,amount:order.amount,currency:order.currency,name:'TrueGoods',description:'A better everyday order',order_id:order.orderId,prefill:{name:form.name,email:form.email,contact:form.phone},notes:{address:`${form.address}, ${form.city}, ${form.state} ${form.pincode}`},handler:async response=>{try{const result=await verifyPayment(response);await emptyCart();setStep(3);setTimeout(()=>navigate('/account?tab=orders',{state:{justPlacedOrderId:result.order._id}}),1800)}catch{setStatus('error');setError('Payment succeeded but verification failed. Please contact support.')}},modal:{ondismiss:()=>setStatus('idle')},theme:{color:'#171c18'}});rzp.on('payment.failed',()=>{setStatus('error');setError('Payment failed or was cancelled. Please try again.')});rzp.open()}catch(err){setStatus('error');setError(err.response?.data?.message||'Could not start checkout.') }};
+ if(!items.length&&step!==3)return <div className="container empty-state"><h3>Nothing to check out</h3><p>Your shopping bag is empty.</p></div>;
+ return <div className="checkout-page"><div className="container checkout-top"><span>SECURE CHECKOUT</span><h1>Almost yours.</h1><div className="checkout-steps">{[['1','Delivery'],['2','Payment'],['3','Confirmation']].map(([n,label])=><div className={step>=Number(n)?'active':''} key={n}><b>{step>Number(n)?'✓':n}</b><span>{label}</span></div>)}</div></div>{step===3?<div className="checkout-success"><div>✓</div><span>PAYMENT CONFIRMED</span><h2>Good choice.</h2><p>Your order is confirmed. We’re taking you to your orders now.</p></div>:<div className="container checkout-layout"><main className="checkout-main">{error&&<div className="checkout-error">{error}</div>}{step===1?<form className="checkout-form" onSubmit={continueToPayment}><div className="checkout-section-title"><span>01</span><div><h2>Delivery details</h2><p>Where should we send your order?</p></div></div><div className="form-grid"><label className="full">Full name<input name="name" value={form.name} onChange={update} placeholder="Abhishek Sharma"/></label><label>Email<input name="email" type="email" value={form.email} onChange={update}/></label><label>Phone<input name="phone" value={form.phone} onChange={update} placeholder="10-digit mobile number"/></label><label className="full">Address<input name="address" value={form.address} onChange={update} placeholder="House number, street and locality"/></label><label>City<input name="city" value={form.city} onChange={update}/></label><label>State<input name="state" value={form.state} onChange={update}/></label><label>Pincode<input name="pincode" value={form.pincode} onChange={update} inputMode="numeric"/></label><label>Country<input value="India" readOnly/></label></div><div className="delivery-card selected"><div><b>Standard delivery</b><span>Estimated 3–5 business days</span></div><strong>{shipping?money(shipping):'FREE'}</strong></div><button className="checkout-primary" type="submit">Continue to payment →</button></form>:<section className="payment-panel"><button className="checkout-back" onClick={()=>setStep(1)}>← Edit delivery details</button><div className="checkout-section-title"><span>02</span><div><h2>Payment</h2><p>Complete your order securely with Razorpay.</p></div></div><div className="payment-method selected"><div className="payment-icon">R</div><div><strong>Razorpay secure checkout</strong><span>Cards, UPI, wallets and net banking</span></div><b>✓</b></div><div className="payment-address"><span>DELIVERING TO</span><strong>{form.name}</strong><p>{form.address}, {form.city}, {form.state} — {form.pincode}</p><small>{form.phone}</small></div><button className="checkout-primary" disabled={status==='processing'} onClick={pay}>{status==='processing'?'Opening secure payment…':`Pay ${money(total)} securely →`}</button><p className="test-note">Test payment: card <code>5267 3181 8797 5449</code>, any future expiry and CVV.</p></section>}</main><aside className="checkout-summary"><h2>Your order</h2><div className="checkout-products">{items.map(i=><div key={i.product._id}><div className="checkout-thumb">{i.product.images?.[0]?<img loading="lazy" decoding="async" src={i.product.images[0]} alt=""/>:<span>TG</span>}<b>{i.quantity}</b></div><div><strong>{i.product.name}</strong><small>{i.product.category?.name||'TrueGoods'}</small></div><span>{money(i.product.price*i.quantity)}</span></div>)}</div><div className="checkout-totals"><p><span>Subtotal</span><strong>{money(subtotal)}</strong></p><p><span>Delivery</span><strong>{shipping?money(shipping):'Free'}</strong></p><p className="grand"><span>Total</span><strong>{money(total)}</strong></p></div><div className="checkout-trust"><span>🔒 Secure payment</span><span>↺ Easy returns</span><span>✓ Quality checked</span></div></aside></div>}</div>
+}

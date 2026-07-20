@@ -1,107 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import './Cart.css';
-
-const formatPrice = (n) => `₹${Number(n).toFixed(2)}`;
-
-const Cart = () => {
-  const { cart, loading, updateItem, removeItem } = useCart();
-  const navigate = useNavigate();
-  const items = cart.items || [];
-
-  const subtotal = items.reduce((sum, item) => {
-    const price = item.product?.price ?? item.priceAtAdd;
-    return sum + price * item.quantity;
-  }, 0);
-
-  if (loading) {
-    return (
-      <div className="container empty-state">
-        <div className="spinner" style={{ margin: '0 auto 12px' }} />
-        Loading cart…
-      </div>
-    );
-  }
-
-  if (items.length === 0) {
-    return (
-      <div className="container empty-state">
-        <h3>Your cart is empty</h3>
-        <p>Add something from the catalog to see it here.</p>
-        <Link to="/products" className="btn btn-primary" style={{ marginTop: 16 }}>
-          Browse products
-        </Link>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container cart-page">
-      <h1>Your cart</h1>
-
-      <div className="cart-layout">
-        <div className="cart-items">
-          {items.map((item) => {
-            const product = item.product;
-            if (!product) return null;
-            return (
-              <div key={product._id} className="cart-item">
-                <div className="cart-item-image">
-                  {product.images?.[0] ? (
-                    <img src={product.images[0]} alt={product.name} />
-                  ) : (
-                    <span>No image</span>
-                  )}
-                </div>
-
-                <div className="cart-item-info">
-                  <Link to={`/products/${product.slug}`} className="cart-item-name">
-                    {product.name}
-                  </Link>
-                  <div className="price-tag">{formatPrice(product.price)}</div>
-                </div>
-
-                <div className="quantity-stepper">
-                  <button
-                    onClick={() => updateItem(product._id, Math.max(1, item.quantity - 1))}
-                    aria-label="Decrease quantity"
-                  >
-                    −
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button
-                    onClick={() => updateItem(product._id, item.quantity + 1)}
-                    disabled={item.quantity >= product.stock}
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <div className="cart-item-line-total">{formatPrice(product.price * item.quantity)}</div>
-
-                <button className="btn btn-danger" onClick={() => removeItem(product._id)}>
-                  Remove
-                </button>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="cart-summary">
-          <h3>Summary</h3>
-          <div className="cart-summary-row">
-            <span>Subtotal</span>
-            <span className="price-tag">{formatPrice(subtotal)}</span>
-          </div>
-          <p className="cart-summary-note">Tax and shipping are calculated at checkout.</p>
-          <button className="btn btn-primary cart-checkout-btn" onClick={() => navigate('/checkout')}>
-            Proceed to checkout
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Cart;
+const money=n=>`₹${Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:0})}`;
+export default function Cart(){
+ const {cart,loading,updateItem,removeItem}=useCart(); const navigate=useNavigate(); const [coupon,setCoupon]=useState(''); const [couponState,setCouponState]=useState('');
+ const items=cart.items||[]; const subtotal=items.reduce((s,i)=>s+(i.product?.price??i.priceAtAdd)*i.quantity,0); const shipping=subtotal>=999?0:99; const discount=couponState==='applied'?Math.round(subtotal*.1):0; const total=subtotal+shipping-discount;
+ if(loading)return <div className="container empty-state">Loading your bag…</div>;
+ if(!items.length)return <div className="cart-empty"><span>YOUR BAG</span><h1>Nothing here yet.</h1><p>Good things are waiting. Start exploring the latest TrueGoods collection.</p><Link className="btn btn-dark" to="/products">Shop the collection</Link></div>;
+ return <div className="cart-page"><div className="container cart-heading"><div><span>YOUR BAG</span><h1>Shopping bag <small>({items.length})</small></h1></div><Link to="/products">Continue shopping →</Link></div><div className="container cart-layout"><section className="cart-items">{items.map(({product,quantity})=>product&&<article className="cart-item" key={product._id}><Link className="cart-item-image" to={`/products/${product.slug}`}>{product.images?.[0]?<img loading="lazy" decoding="async" src={product.images[0]} alt={product.name}/>:<span>TG</span>}</Link><div className="cart-item-info"><span>{product.category?.name||'TrueGoods collection'}</span><Link to={`/products/${product.slug}`}>{product.name}</Link><small>In stock · Dispatches in 1–2 days</small><button onClick={()=>removeItem(product._id)}>Remove</button></div><div className="cart-item-controls"><div className="cart-qty"><button onClick={()=>quantity===1?removeItem(product._id):updateItem(product._id,quantity-1)}>−</button><span>{quantity}</span><button disabled={quantity>=product.stock} onClick={()=>updateItem(product._id,quantity+1)}>+</button></div><strong>{money(product.price*quantity)}</strong></div></article>)}</section><aside className="cart-summary"><h2>Order summary</h2><div className="summary-line"><span>Subtotal</span><strong>{money(subtotal)}</strong></div><div className="summary-line"><span>Delivery</span><strong>{shipping?money(shipping):'Free'}</strong></div>{discount>0&&<div className="summary-line success"><span>TRUE10</span><strong>−{money(discount)}</strong></div>}<div className="cart-progress"><div style={{width:`${Math.min(100,subtotal/999*100)}%`}}/><p>{shipping?'Add '+money(999-subtotal)+' more for free delivery.':'You unlocked free delivery.'}</p></div><div className="coupon-box"><label>Have a promo code?</label><div><input value={coupon} onChange={e=>setCoupon(e.target.value)} placeholder="Enter code"/><button onClick={()=>setCouponState(coupon.trim().toUpperCase()==='TRUE10'?'applied':'invalid')}>Apply</button></div>{couponState==='applied'&&<small className="coupon-good">TRUE10 applied — 10% off</small>}{couponState==='invalid'&&<small className="coupon-bad">Try TRUE10 for this demo.</small>}</div><div className="summary-total"><span>Total</span><strong>{money(total)}</strong></div><button className="cart-checkout" onClick={()=>navigate('/checkout')}>Secure checkout <span>→</span></button><p className="cart-safe">🔒 Secure payment powered by Razorpay</p><div className="cart-perks"><span>✓ 7-day returns</span><span>✓ Secure checkout</span><span>✓ Honest pricing</span></div></aside></div></div>
+}
