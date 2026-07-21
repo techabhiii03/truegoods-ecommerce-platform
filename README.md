@@ -393,7 +393,7 @@ TrueGoods
 ## 👥 Customer Management
 
 <p align="center">
-<img src="assets/admin-customers.png" width="100%">
+<img src="assets/Admin-customers.png" width="100%">
 </p>
 
 ---
