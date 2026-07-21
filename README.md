@@ -328,7 +328,7 @@ TrueGoods
 ## 🏠 Home Page
 
 <p align="center">
-<img src="assets/Home.png" width="100%">
+<img src="assets/home.png" width="100%">
 </p>
 
 ---
@@ -385,7 +385,7 @@ TrueGoods
 ## 📦 Product Management
 
 <p align="center">
-<img src="assets/Admin-Products.png" width="100%">
+<img src="assets/admin-products.png" width="100%">
 </p>
 
 ---
@@ -393,7 +393,7 @@ TrueGoods
 ## 👥 Customer Management
 
 <p align="center">
-<img src="assets/Admin-Customers.png" width="100%">
+<img src="assets/admin-customers.png" width="100%">
 </p>
 
 ---
@@ -401,7 +401,7 @@ TrueGoods
 ## 📋 Order Management
 
 <p align="center">
-<img src="assets/Admin-Orders.png" width="100%">
+<img src="assets/admin-orders.png" width="100%">
 </p>
 
 # 🚀 Getting Started
